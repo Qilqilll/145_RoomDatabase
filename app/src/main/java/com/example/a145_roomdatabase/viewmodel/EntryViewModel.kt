@@ -34,3 +34,18 @@ data class DetailSiswa(
     val telpon: String = ""
 )
 
+
+fun DetailSiswa.toSiswa(): Siswa = Siswa(
+    id = id,
+    nama = nama,
+    alamat = alamat,
+    telpon = telpon
+)
+
+
+fun Siswa.toUiStateSiswa(isEntryValid: Boolean = false): UIStateSiswa =
+    UIStateSiswa(
+        detailSiswa = this.toDetailSiswa(),
+        isEntryValid = isEntryValid
+    )
+
