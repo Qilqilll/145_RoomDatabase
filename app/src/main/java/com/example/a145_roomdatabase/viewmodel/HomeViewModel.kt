@@ -12,3 +12,21 @@ import kotlinx.coroutines.flow.stateIn
 class HomeViewModel(
     private val repositoriSiswa: RepositoriSiswa
 ) : ViewModel() {
+
+    companion object {
+        private const val TIMEOUT_MILLIS = 5_000L
+    }
+
+    val homeUiState: StateFlow<HomeUiState> =
+        repositoriSiswa.getAllSiswaStream()
+            .map { HomeUiState(listSiswa = it.toList()) }   // gunakan nama yg benar
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = TIMEOUT_MILLIS),
+                initialValue = HomeUiState()
+            )
+
+    data class HomeUiState(
+        val listSiswa: List<Siswa> = listOf()   // perbaikan listOf()
+    )
+}
